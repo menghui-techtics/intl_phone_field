@@ -416,15 +416,24 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
 
         widget.onChanged?.call(phoneNumber);
       },
-      validator: (value) {
-        if (value == null || !isNumeric(value)) return validatorMessage;
-        if (!widget.disableLengthCheck) {
-          return value.length >= _selectedCountry.minLength && value.length <= _selectedCountry.maxLength
-              ? null
-              : widget.invalidNumberMessage;
-        }
+      // validator: (value) {
+      //   if (value == null || !isNumeric(value)) return validatorMessage;
+      //   if (!widget.disableLengthCheck) {
+      //     return value.length >= _selectedCountry.minLength && value.length <= _selectedCountry.maxLength
+      //         ? null
+      //         : widget.invalidNumberMessage;
+      //   }
 
-        return validatorMessage;
+      //   return validatorMessage;
+      // },
+      validator: (value) {
+        final phoneNumber = PhoneNumber(
+          countryISOCode: _selectedCountry.code,
+          countryCode: '+${_selectedCountry.fullCountryCode}',
+          number: value ?? '',
+        );
+        final message = widget.validator?.call(phoneNumber);
+        return message.toString();
       },
       maxLength: widget.disableLengthCheck ? null : _selectedCountry.maxLength,
       keyboardType: widget.keyboardType,

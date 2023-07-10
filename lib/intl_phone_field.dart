@@ -433,7 +433,8 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
           number: value ?? '',
         );
         final message = widget.validator?.call(phoneNumber);
-        return message.toString();
+        if (message == null) return null;
+        return message?.toString();
       },
       maxLength: widget.disableLengthCheck ? null : _selectedCountry.maxLength,
       keyboardType: widget.keyboardType,
